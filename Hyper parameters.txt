@@ -1,0 +1,59 @@
+Hyper parameters
+
+task: detect 
+Specifies the YOLO task to be executed. Options include detect for object detection, segment for segmentation, classify for classification, pose for pose estimation and OBB for oriented bounding boxes. Each task is tailored to specific types of output and problems within image and video analysis.
+
+mode: train
+Specifies the mode in which the YOLO model operates. Options are train for model training, val for validation, predict for inference on new data, export for model conversion to deployment formats, track for object tracking, and benchmark for performance evaluation. Each mode is designed for different stages of the model lifecycle, from development through deployment.
+
+model: yolov8s.pt
+`yolov8` has various versions with diffrent capacities The `m` version is bigger than the 's', it has more capacity to learn more patterns --> that also means it's more prone to overfitting and to capturing noise as well, especially if the dataset isn't very big or diverse. since our dataset has very limited ammounts of photos. we decided to go with `s`
+
+epochs: 150
+Total number of training epochs. Each epoch represents a full pass over the entire dataset. Adjusting this value can affect training duration and model performance.
+
+patience: 50
+Number of epochs to wait without improvement in validation metrics before early stopping the training. Helps prevent overfitting by stopping training when performance plateaus.
+
+batch: 16
+Batch size for training, indicating how many images are processed before the model's internal parameters are updated. AutoBatch (batch=-1) dynamically adjusts the batch size based on GPU memory availability.
+
+imgsz: 800
+Target image size for training. All images are resized to this dimension before being fed into the model. Affects model accuracy and computational complexity.
+
+save: true
+Enables saving of training checkpoints and final model weights. Useful for resuming training or model deployment.
+
+device: 0
+Specifies the computational device(s) for training: a single GPU (device=0)
+
+workers: 8
+Number of worker threads for data loading. Influences the speed of data preprocessing and feeding into the model
+
+optimizer: SGD
+Optimizers are algorithms that adjust the parameters of the neural network model during training to minimize the error between predicted bounding boxes (locations of objects) and the ground truth bounding boxes. They basically adjust weights and biases.
+
+verbose: true
+Enables verbose output during training, providing detailed logs and progress updates. Useful for debugging and closely monitoring the training process. Just for ease of understanding training progress.
+
+single_cls: false
+Treats all classes in multi-class datasets as a single class during training. Useful for object presence rather than classification. Since we wanted to detect car 
+so we left it default.
+
+fraction: 1.0
+Fraction of dataset used for training. The main dataset was divided into 90-10 for training and testing respectively.
+out of those 90% the model has used all images for training. 
+
+dropout: 0.1 
+
+val: true
+lr0: 0.0001
+Initial learning rate (i.e. SGD=1E-2) . Adjusting this value is crucial, as it influences how rapidly model weights are updated.
+if kept very large the model would not find global minimum. if too small then model will take too much time for converging.
+
+lrf: 0.01
+Final learning rate as a fraction of the initial rate = (lr0 * lrf), used in conjunction with schedulers to adjust the learning rate over time.
+
+
+Training Environment 
+Python-3.10.12 torch-2.1.0+cu121 CUDA:0 (Tesla T4, 15102MiB)
